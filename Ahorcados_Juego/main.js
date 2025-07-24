@@ -41,6 +41,23 @@ function startGame() {
         div.textContent = '';
         wordContainer.appendChild(div);
     }
+    // Reveal some letters as hints
+    const hintCount = selectedWord.length <= 4 ? 1 : 2;
+    const revealed = new Set();
+    while (revealed.size < hintCount) {
+        const letter = selectedWord[Math.floor(Math.random() * selectedWord.length)];
+        revealed.add(letter);
+    }
+    revealed.forEach(letter => {
+        if (!guessed.includes(letter)) {
+            guessed.push(letter);
+        }
+        for (let i = 0; i < selectedWord.length; i++) {
+            if (selectedWord[i] === letter) {
+                wordContainer.children[i].textContent = letter;
+            }
+        }
+    });
     guessInput.disabled = false;
     guessButton.disabled = false;
     guessInput.focus();
