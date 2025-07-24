@@ -1,0 +1,136 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+}
+
+#word {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.letter {
+    border-bottom: 2px solid #333;
+    width: 24px;
+    height: 32px;
+    margin: 0 3px;
+    font-size: 24px;
+    line-height: 32px;
+}
+
+#hangman {
+    position: relative;
+    width: 200px;
+    height: 250px;
+    margin: 0 auto;
+}
+
+.gallows .base {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 10px;
+    background: #000;
+}
+
+.gallows .pole {
+    position: absolute;
+    bottom: 10px;
+    left: 45px;
+    width: 10px;
+    height: 200px;
+    background: #000;
+}
+
+.gallows .beam {
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 80px;
+    height: 10px;
+    background: #000;
+}
+
+.gallows .rope {
+    position: absolute;
+    top: 10px;
+    left: 120px;
+    width: 2px;
+    height: 30px;
+    background: #000;
+}
+
+.part {
+    position: absolute;
+    visibility: hidden;
+}
+
+#head {
+    top: 40px;
+    left: 110px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    border-radius: 50%;
+}
+
+#body {
+    top: 60px;
+    left: 120px;
+    width: 2px;
+    height: 50px;
+    background: #000;
+}
+
+#arm-left {
+    top: 70px;
+    left: 120px;
+    width: 30px;
+    height: 2px;
+    background: #000;
+    transform-origin: left;
+    transform: rotate(-45deg);
+}
+
+#arm-right {
+    top: 70px;
+    left: 92px;
+    width: 30px;
+    height: 2px;
+    background: #000;
+    transform-origin: right;
+    transform: rotate(45deg);
+}
+
+#leg-left {
+    top: 110px;
+    left: 120px;
+    width: 30px;
+    height: 2px;
+    background: #000;
+    transform-origin: left;
+    transform: rotate(45deg);
+}
+
+#leg-right {
+    top: 110px;
+    left: 92px;
+    width: 30px;
+    height: 2px;
+    background: #000;
+    transform-origin: right;
+    transform: rotate(-45deg);
+}
+
+#message {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+button {
+    margin: 10px;
+    padding: 5px 15px;
+}
