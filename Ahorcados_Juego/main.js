@@ -15,6 +15,8 @@ let score = 0;
 
 const scoreDisplay = document.getElementById('score');
 const buyButton = document.getElementById('buyAttempts');
+const hangman = document.getElementById('hangman');
+const scaryOverlay = document.getElementById('scaryOverlay');
 
 const wordContainer = document.getElementById('word');
 const message = document.getElementById('message');
@@ -56,6 +58,8 @@ function startGame() {
     bloodContainer.style.opacity = '0';
     bloodContainer.innerHTML = '';
     buyButton.style.display = 'none';
+    hangman.classList.remove('free');
+    scaryOverlay.classList.remove('show');
     selectedWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
     wordContainer.innerHTML = '';
     parts.forEach(p => p.style.visibility = 'hidden');
@@ -110,6 +114,14 @@ function showBloodSplash() {
     }, 100);
 }
 
+function showScaryFace() {
+    hangman.classList.add('free');
+    scaryOverlay.classList.add('show');
+    setTimeout(() => {
+        scaryOverlay.classList.remove('show');
+    }, 1500);
+}
+
 function buyAttempts() {
     const cost = 5;
     if (score < cost) {
@@ -158,6 +170,7 @@ function checkLetter(provided) {
             guessInput.disabled = true;
             guessButton.disabled = true;
             showBloodSplash();
+            showScaryFace();
             if (score >= 5) {
                 buyButton.style.display = 'inline-block';
             }
