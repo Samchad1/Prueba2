@@ -10,6 +10,11 @@ let selectedWord = '';
 let fails = 0;
 const maxFails = 6;
 let guessed = [];
+let extraAttempts = 0;
+let score = 0;
+
+const scoreDisplay = document.getElementById('score');
+const buyButton = document.getElementById('buyAttempts');
 
 const wordContainer = document.getElementById('word');
 const message = document.getElementById('message');
@@ -21,6 +26,7 @@ const bloodContainer = document.getElementById('blood');
 
 startButton.addEventListener('click', startGame);
 guessButton.addEventListener('click', () => checkLetter());
+buyButton.addEventListener('click', buyAttempts);
 
 // Allow guessing by pressing any letter key on the keyboard.
 document.addEventListener('keydown', event => {
@@ -37,13 +43,19 @@ guessInput.addEventListener('keyup', function(event) {
     }
 });
 
+function updateScore() {
+    scoreDisplay.textContent = 'Puntuaci\u00f3n: ' + score;
+}
+
 function startGame() {
     fails = 0;
+    extraAttempts = 0;
     guessed = [];
     message.textContent = '';
     guessInput.value = '';
     bloodContainer.style.opacity = '0';
     bloodContainer.innerHTML = '';
+    buyButton.style.display = 'none';
     selectedWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
     wordContainer.innerHTML = '';
     parts.forEach(p => p.style.visibility = 'hidden');
@@ -73,6 +85,7 @@ function startGame() {
     });
     guessInput.disabled = false;
     guessButton.disabled = false;
+    updateScore();
     guessInput.focus();
 }
 
@@ -97,6 +110,23 @@ function showBloodSplash() {
     }, 100);
 }
 
+function buyAttempts() {
+    const cost = 5;
+    if (score < cost) {
+        message.textContent = 'No tienes puntos suficientes';
+        return;
+    }
+    score -= cost;
+    extraAttempts += 3;
+    updateScore();
+    message.textContent = '';
+    guessInput.disabled = false;
+    guessButton.disabled = false;
+    buyButton.style.display = 'none';
+    bloodContainer.style.opacity = '0';
+    bloodContainer.innerHTML = '';
+}
+
 function checkLetter(provided) {
     const letter = (provided || guessInput.value).toLowerCase();
     guessInput.value = '';
@@ -113,6 +143,8 @@ function checkLetter(provided) {
         }
         if (Array.from(wordContainer.children).every(c => c.textContent !== '')) {
             message.textContent = '¡Has ganado!';
+            score += 10;
+            updateScore();
             guessInput.disabled = true;
             guessButton.disabled = true;
         }
@@ -121,11 +153,14 @@ function checkLetter(provided) {
         if (fails <= parts.length) {
             parts[fails - 1].style.visibility = 'visible';
         }
-        if (fails >= maxFails) {
+        if (fails >= maxFails + extraAttempts) {
             message.textContent = 'Has fallado. La palabra era: ' + selectedWord;
             guessInput.disabled = true;
             guessButton.disabled = true;
             showBloodSplash();
+            if (score >= 5) {
+                buyButton.style.display = 'inline-block';
+            }
         }
     }
 }
