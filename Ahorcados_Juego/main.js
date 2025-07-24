@@ -19,7 +19,16 @@ const startButton = document.getElementById('start');
 const parts = document.querySelectorAll('.part');
 
 startButton.addEventListener('click', startGame);
-guessButton.addEventListener('click', checkLetter);
+guessButton.addEventListener('click', () => checkLetter());
+
+// Allow guessing by pressing any letter key on the keyboard.
+document.addEventListener('keydown', event => {
+    if (guessInput.disabled) return;
+    const letter = event.key.toLowerCase();
+    if (/^[a-zñáéíóúü]$/i.test(letter)) {
+        checkLetter(letter);
+    }
+});
 
 guessInput.addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {
@@ -64,8 +73,8 @@ function startGame() {
     guessInput.focus();
 }
 
-function checkLetter() {
-    const letter = guessInput.value.toLowerCase();
+function checkLetter(provided) {
+    const letter = (provided || guessInput.value).toLowerCase();
     guessInput.value = '';
     if (!letter || letter.length !== 1 || guessed.includes(letter)) {
         return;
