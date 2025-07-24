@@ -10,6 +10,12 @@
 <body>
     <h1>Juego del Ahorcado</h1>
     <div id="score">Puntuación: 0</div>
+    <div id="stats">
+        <span id="attempts">Intentos: 0</span>
+        <span id="successes">Éxitos: 0</span>
+        <span id="errors">Errores: 0</span>
+        <span id="timer">Tiempo: 0s</span>
+    </div>
     <div id="word" class="word"></div>
     <div id="hangman">
         <div class="gallows">
@@ -34,6 +40,12 @@
     <div id="scaryOverlay">
         <div id="scaryFace">
             <div class="mouth"></div>
+        </div>
+    </div>
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <p>¡Has ganado!</p>
+            <button id="closeModal">Cerrar</button>
         </div>
     </div>
     <script src="main.js"></script>

@@ -12,11 +12,20 @@ const maxFails = 6;
 let guessed = [];
 let extraAttempts = 0;
 let score = 0;
+let successes = 0;
+let timeLeft = 60;
+let timerId = null;
 
 const scoreDisplay = document.getElementById('score');
+const attemptsDisplay = document.getElementById('attempts');
+const successesDisplay = document.getElementById('successes');
+const errorsDisplay = document.getElementById('errors');
+const timerDisplay = document.getElementById('timer');
 const buyButton = document.getElementById('buyAttempts');
 const hangman = document.getElementById('hangman');
 const scaryOverlay = document.getElementById('scaryOverlay');
+const winModal = document.getElementById('winModal');
+const closeModal = document.getElementById('closeModal');
 
 const wordContainer = document.getElementById('word');
 const message = document.getElementById('message');
@@ -29,6 +38,9 @@ const bloodContainer = document.getElementById('blood');
 startButton.addEventListener('click', startGame);
 guessButton.addEventListener('click', () => checkLetter());
 buyButton.addEventListener('click', buyAttempts);
+closeModal.addEventListener('click', () => {
+    winModal.classList.remove('show');
+});
 
 // Allow guessing by pressing any letter key on the keyboard.
 document.addEventListener('keydown', event => {
@@ -49,9 +61,20 @@ function updateScore() {
     scoreDisplay.textContent = 'Puntuaci\u00f3n: ' + score;
 }
 
+function updateStats() {
+    const attemptsLeft = (maxFails + extraAttempts) - fails;
+    attemptsDisplay.textContent = 'Intentos: ' + attemptsLeft;
+    successesDisplay.textContent = 'Éxitos: ' + successes;
+    errorsDisplay.textContent = 'Errores: ' + fails;
+    timerDisplay.textContent = 'Tiempo: ' + timeLeft + 's';
+}
+
 function startGame() {
     fails = 0;
     extraAttempts = 0;
+    successes = 0;
+    timeLeft = 60;
+    clearInterval(timerId);
     guessed = [];
     message.textContent = '';
     guessInput.value = '';
@@ -60,6 +83,7 @@ function startGame() {
     buyButton.style.display = 'none';
     hangman.classList.remove('free');
     scaryOverlay.classList.remove('show');
+    winModal.classList.remove('show');
     selectedWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
     wordContainer.innerHTML = '';
     parts.forEach(p => p.style.visibility = 'hidden');
@@ -84,12 +108,29 @@ function startGame() {
         for (let i = 0; i < selectedWord.length; i++) {
             if (selectedWord[i] === letter) {
                 wordContainer.children[i].textContent = letter;
+                successes++;
             }
         }
     });
     guessInput.disabled = false;
     guessButton.disabled = false;
     updateScore();
+    updateStats();
+    timerId = setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+            clearInterval(timerId);
+            message.textContent = 'Tiempo agotado. La palabra era: ' + selectedWord;
+            guessInput.disabled = true;
+            guessButton.disabled = true;
+            showBloodSplash();
+            showScaryFace();
+            if (score >= 5) {
+                buyButton.style.display = 'inline-block';
+            }
+        }
+        updateStats();
+    }, 1000);
     guessInput.focus();
 }
 
@@ -131,6 +172,7 @@ function buyAttempts() {
     score -= cost;
     extraAttempts += 3;
     updateScore();
+    updateStats();
     message.textContent = '';
     guessInput.disabled = false;
     guessButton.disabled = false;
@@ -149,26 +191,32 @@ function checkLetter(provided) {
 
     if (selectedWord.includes(letter)) {
         for (let i = 0; i < selectedWord.length; i++) {
-            if (selectedWord[i] === letter) {
+            if (selectedWord[i] === letter && wordContainer.children[i].textContent === '') {
                 wordContainer.children[i].textContent = letter;
+                successes++;
             }
         }
+        updateStats();
         if (Array.from(wordContainer.children).every(c => c.textContent !== '')) {
             message.textContent = '¡Has ganado!';
             score += 10;
             updateScore();
+            clearInterval(timerId);
             guessInput.disabled = true;
             guessButton.disabled = true;
+            winModal.classList.add('show');
         }
     } else {
         fails++;
         if (fails <= parts.length) {
             parts[fails - 1].style.visibility = 'visible';
         }
+        updateStats();
         if (fails >= maxFails + extraAttempts) {
             message.textContent = 'Has fallado. La palabra era: ' + selectedWord;
             guessInput.disabled = true;
             guessButton.disabled = true;
+            clearInterval(timerId);
             showBloodSplash();
             showScaryFace();
             if (score >= 5) {

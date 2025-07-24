@@ -9,6 +9,11 @@ body {
     font-size: 18px;
 }
 
+#stats {
+    margin: 10px;
+    font-size: 16px;
+}
+
 #word {
     display: flex;
     justify-content: center;
@@ -230,4 +235,27 @@ button {
 #hangman.free .part {
     transition: transform 0.5s ease-in;
     transform: translateY(80px);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.modal.show {
+    display: flex;
 }
