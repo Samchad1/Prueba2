@@ -41,8 +41,9 @@ function startGame() {
         div.textContent = '';
         wordContainer.appendChild(div);
     }
-    // Reveal some letters as hints
-    const hintCount = selectedWord.length <= 4 ? 1 : 2;
+    // Reveal some letters as hints. If the word has fewer than
+    // four letters, no hints are shown.
+    const hintCount = selectedWord.length < 4 ? 0 : 2;
     const revealed = new Set();
     while (revealed.size < hintCount) {
         const letter = selectedWord[Math.floor(Math.random() * selectedWord.length)];
