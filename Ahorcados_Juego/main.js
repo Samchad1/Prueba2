@@ -17,6 +17,7 @@ const guessInput = document.getElementById('guess');
 const guessButton = document.getElementById('guessButton');
 const startButton = document.getElementById('start');
 const parts = document.querySelectorAll('.part');
+const bloodContainer = document.getElementById('blood');
 
 startButton.addEventListener('click', startGame);
 guessButton.addEventListener('click', () => checkLetter());
@@ -41,6 +42,8 @@ function startGame() {
     guessed = [];
     message.textContent = '';
     guessInput.value = '';
+    bloodContainer.style.opacity = '0';
+    bloodContainer.innerHTML = '';
     selectedWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
     wordContainer.innerHTML = '';
     parts.forEach(p => p.style.visibility = 'hidden');
@@ -73,6 +76,27 @@ function startGame() {
     guessInput.focus();
 }
 
+function showBloodSplash() {
+    bloodContainer.innerHTML = '';
+    for (let i = 0; i < 20; i++) {
+        const drop = document.createElement('div');
+        drop.classList.add('blood-drop');
+        const size = Math.random() * 30 + 10;
+        drop.style.width = size + 'px';
+        drop.style.height = size + 'px';
+        drop.style.top = Math.random() * 100 + '%';
+        drop.style.left = Math.random() * 100 + '%';
+        bloodContainer.appendChild(drop);
+    }
+    bloodContainer.style.opacity = '1';
+    setTimeout(() => {
+        bloodContainer.style.opacity = '0';
+        setTimeout(() => {
+            bloodContainer.innerHTML = '';
+        }, 1000);
+    }, 100);
+}
+
 function checkLetter(provided) {
     const letter = (provided || guessInput.value).toLowerCase();
     guessInput.value = '';
@@ -101,6 +125,7 @@ function checkLetter(provided) {
             message.textContent = 'Has fallado. La palabra era: ' + selectedWord;
             guessInput.disabled = true;
             guessButton.disabled = true;
+            showBloodSplash();
         }
     }
 }
