@@ -1,14 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ahorcados</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <h1>Juego del Ahorcado</h1>
+    <div id="score">Puntuación: 0</div>
+    <div id="stats">
+        <span id="attempts">Intentos: 0</span>
+        <span id="successes">Éxitos: 0</span>
+        <span id="errors">Errores: 0</span>
+        <span id="timer">Tiempo: 0s</span>
+    </div>
+    <div id="word" class="word"></div>
+    <div id="hangman">
+        <div class="gallows">
+            <div class="base"></div>
+            <div class="pole"></div>
+            <div class="beam"></div>
+            <div class="rope"></div>
+        </div>
+        <div id="head" class="part"></div>
+        <div id="body" class="part"></div>
+        <div id="arm-left" class="part"></div>
+        <div id="arm-right" class="part"></div>
+        <div id="leg-left" class="part"></div>
+        <div id="leg-right" class="part"></div>
+    </div>
+    <input id="guess" type="text" maxlength="1" autocomplete="off">
+    <button id="guessButton">Enviar</button>
+    <div id="message"></div>
+    <button id="start">Iniciar juego</button>
+    <button id="buyAttempts" style="display:none;">Comprar 3 intentos (5 puntos)</button>
+    <div id="blood"></div>
+    <div id="scaryOverlay">
+        <div id="scaryFace">
+            <div class="mouth"></div>
+        </div>
+    </div>
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <p>¡Has ganado!</p>
+            <button id="closeModal">Cerrar</button>
+        </div>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
